@@ -13,14 +13,14 @@ if($value == date( 'Y' ) || $value < date( 'Y' )){
     $validate = true;
 }
 
-if( $value != '' && strlen( $value ) == 4 &&  $validate && $value >= 2004 ){
+if( $value != '' && strlen( $value ) == 4 && $validate && $value >= 2004 ){
     
     function pfr__dppy_delete_posts() {
-
+        $pfr_limitToLoop = 1000;
         $arrToPost = [
-            'numberposts'		=> 10000,
-            'post_type'			=> 'post',
-            'post_status'       => [ 'publish', 'draft' ]
+            'numberposts'	=> $pfr_limitToLoop,
+            'post_type'		=> 'post',
+            'post_status'   => [ 'publish', 'draft' ]
         ];
 
         $pfr_posts = get_posts( $arrToPost );
@@ -32,9 +32,8 @@ if( $value != '' && strlen( $value ) == 4 &&  $validate && $value >= 2004 ){
         }
         
         $pfr_imgs = get_posts( [
-            'numberposts'		=> 10000,
-            'post_type' => 'attachment',
-            'meta_value_num'	=> get_option( 'pfr_delete_posts_per_year' )[ 'label_year' ]
+            'numberposts'	=> $pfr_limitToLoop,
+            'post_type'     => 'attachment',
         ] );
             
             
