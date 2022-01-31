@@ -16,7 +16,7 @@ if($value == date( 'Y' ) || $value < date( 'Y' )){
 if( $value != '' && strlen( $value ) == 4 && $validate && $value >= 2004 ){
     
     function pfr__dppy_delete_posts() {
-        $pfr_limitToLoop = 1000;
+        $pfr_limitToLoop = -1;
         $arrToPost = [
             'numberposts'	=> $pfr_limitToLoop,
             'post_type'		=> 'post',

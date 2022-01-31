@@ -27,7 +27,7 @@ if( ! class_exists( 'pfr__dppy_admin' ) ){
         }
 
         public function pfr__dppy__addPluginPage(){
-            add_menu_page(
+            add_options_page(
                 __( 'Settings: ' . $this->plugin_name ),
                 $this->plugin_name,
                 'manage_options',
