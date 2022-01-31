@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/93988164/151715632-4862ca18-8f75-414b-9a77-b0da89dd2cb1.jpg">
+<img src="https://user-images.githubusercontent.com/93988164/151728713-87e60ed8-6d8c-4555-818f-bedc3bcd8372.jpg">
 <h1>Delete posts per year</h1>
 <div>
   <img src="https://img.shields.io/badge/Status-Finalizando-blueviolet">
@@ -18,10 +18,10 @@
 <p>Com o download feito, basta descompactar o arquivo no diretório de plugins do wordpress e renomear a pasta para: <code>pfr-delete-posts-per-year</code>. Após isso, vá para o painel de plugins e ative o plugin. Com o plugin ativado, será criado um novo menu de administração dentro da aba "Configurações" nomeado como "PFR - Delete posts per year".</p>
 
 <h3>Formas de uso</h3>
-<p>Na aba de administração do plugin estará disponível 1 (um) campo que deverá receber um ano com quatro dígitos em um valor acima de 2004 ( dois mil e quatro ) e com o limite do ano atual. Com o devido preenchimento do campo, basta clicar em "Submit" e o plugin irá recarregar a página e, enquanto ela é recarregada os posts e registros de imagens serão apagados. É importante que não abra outra página ou recarregue a página atual enquanto a ação não estiver totalmente finalizada.</p>
+<p>Na aba de administração do plugin estará disponível 1 (um) campo que deverá receber um ano com quatro dígitos em um valor acima de 2004 ( dois mil e quatro ) e com o limite do ano atual. Com o devido preenchimento do campo, basta clicar em "Salvar alterações" e o plugin irá recarregar a página e, enquanto ela é recarregada os posts e registros de imagens serão apagados. É importante que não abra outra página ou recarregue a página atual enquanto a ação não estiver totalmente finalizada.</p>
 
 <div align="center">
-<img src="https://user-images.githubusercontent.com/93988164/150459956-713b4e7b-2a37-41d7-896d-5e65c814ca41.gif">
+<img src="https://user-images.githubusercontent.com/93988164/151729687-172dd3e1-77d4-4b30-b979-fb1a546a8597.gif">
 </div>
 
 <h2>Tecnologias utilizadas</h2>
