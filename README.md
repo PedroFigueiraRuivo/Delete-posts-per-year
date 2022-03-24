@@ -22,7 +22,7 @@
 <p>Na aba de administração do plugin estará disponível 2 (dois) campos em que o primeiro deverá receber um ano com quatro dígitos em um valor acima de 2004 ( dois mil e quatro ) e com o limite do ano atual e o segundo é um checkbox que, se marcado, apagará também os registros de imagens. Com o devido preenchimento do campo, basta clicar em "Salvar alterações" e o plugin irá recarregar a página e, enquanto ela é recarregada os posts e registros de imagens (se o checkbox for marcado ) serão apagados. É importante que não abra outra página ou recarregue a página atual enquanto a ação não estiver totalmente finalizada.</p>
 
 <div align="center">
-<img src="https://user-images.githubusercontent.com/93988164/151729687-172dd3e1-77d4-4b30-b979-fb1a546a8597.gif">
+<img src="https://user-images.githubusercontent.com/93988164/160001197-62fd52dc-73b9-4a8a-a86b-3f7ef55473b2.gif">
 </div>
 
 <h2>Tecnologias utilizadas</h2>
