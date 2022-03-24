@@ -14,6 +14,14 @@ if($value == date( 'Y' ) || $value < date( 'Y' )){
 }
 
 if( $value != '' && strlen( $value ) == 4 && $validate && $value >= 2004 ){
+
+    function pfr__dppy_runDelete( $pfr_archivesParamer ){
+        foreach ( $pfr_archivesParamer as $archives ) {
+            if( get_the_date( 'Y', $archives->ID ) == get_option( 'pfr_delete_posts_per_year' )[ 'label_year' ] ){
+                wp_delete_post( $archives->ID, true ); 
+            }
+        }
+    }
     
     function pfr__dppy_delete_posts() {
         $pfr_limitToLoop = -1;
@@ -24,27 +32,19 @@ if( $value != '' && strlen( $value ) == 4 && $validate && $value >= 2004 ){
         ];
 
         $pfr_posts = get_posts( $arrToPost );
-
-        foreach ( $pfr_posts as $pfr_thePost ) {
-            if( get_the_date( 'Y', $pfr_thePost->ID ) == get_option( 'pfr_delete_posts_per_year' )[ 'label_year' ] ){
-                wp_delete_post( $pfr_thePost->ID, true ); 
-            }
-        }
+        pfr__dppy_runDelete( $pfr_posts );
         
-        $pfr_imgs = get_posts( [
-            'numberposts'	=> $pfr_limitToLoop,
-            'post_type'     => 'attachment',
-        ] );
-            
-            
-        foreach ( $pfr_imgs as $pfr_theImg ) {
-            if( get_the_date( 'Y', $pfr_theImg->ID ) == get_option( 'pfr_delete_posts_per_year' )[ 'label_year' ] ){
-                wp_delete_attachment( $pfr_theImg->ID, true);
-            }
+        if( isset( get_option( 'pfr_delete_posts_per_year' )[ 'label_checked' ] ) && get_option( 'pfr_delete_posts_per_year' )[ 'label_checked' ] == "Yes" ){
+
+            $pfr_imgs = get_posts( [
+                'numberposts'	=> $pfr_limitToLoop,
+                'post_type'     => 'attachment',
+            ] );
+            pfr__dppy_runDelete( $pfr_imgs );
+
         }
 
         delete_option( 'pfr_delete_posts_per_year' );
-
     }
 
     add_action( 'init', 'pfr__dppy_delete_posts' );
