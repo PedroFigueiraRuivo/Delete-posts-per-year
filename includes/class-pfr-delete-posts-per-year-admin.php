@@ -82,16 +82,21 @@ if( ! class_exists( 'pfr__dppy_admin' ) ){
             );
             
             add_settings_field(
+                'label_limit',
+                __( 'Limit', $this->plugin_slug ),
+                [ $this, 'pfr_callback__label_limit' ],
+                $this->plugin_slug . '-admin',
+                'settings_section_id_1'
+            );
+            
+            add_settings_field(
                 'label_checked',
-                __( 'Label checked', $this->plugin_slug ),
+                __( 'Delete archives', $this->plugin_slug ),
                 [ $this, 'pfr_callback__label_checked' ],
                 $this->plugin_slug . '-admin',
                 'settings_section_id_1'
             );
         }
-
-
-
 
         public function pfr_callback__label_year(){
             $value = isset( $this->options[ 'label_year' ] ) ? esc_attr( $this->options[ 'label_year' ] ) : '';
@@ -103,10 +108,18 @@ if( ! class_exists( 'pfr__dppy_admin' ) ){
             
             <?php
         }
+
+        public function pfr_callback__label_limit(){
+            $value = isset( $this->options[ 'label_limit' ] ) ? esc_attr( $this->options[ 'label_limit' ] ) : '';
+
+            ?>
+            
+            <input type="text" id="label_limit" name="<?php echo $this->plugin_slug_db . '[label_limit]' ;?>"  value="<?php echo $value; ?>" class="regular-text"><br>
+            <p class="description"><?php echo __( 'limit to delete - 200 defalt ( 0 to infinit )', $this->plugin_slug ); ?></p>
+            
+            <?php
+        }
         
-
-
-
         public function pfr_callback__label_checked(){
             $value = isset( $this->options[ 'label_checked' ] ) ? esc_attr( $this->options[ 'label_checked' ] ) : '';
 
@@ -126,6 +139,9 @@ if( ! class_exists( 'pfr__dppy_admin' ) ){
 
             if( isset( $input[ 'label_year' ] ) ){
                 $new_input[ 'label_year' ] = sanitize_text_field( $input[ 'label_year' ] );
+            }
+            if( isset( $input[ 'label_limit' ] ) ){
+                $new_input[ 'label_limit' ] = sanitize_text_field( $input[ 'label_limit' ] );
             }
             if( isset( $input[ 'label_checked' ] ) ){
                 $new_input[ 'label_checked' ] = sanitize_text_field( $input[ 'label_checked' ] );
