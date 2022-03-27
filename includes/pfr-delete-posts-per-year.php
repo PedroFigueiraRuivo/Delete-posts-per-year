@@ -1,30 +1,36 @@
 <?php
-
+// define vars
 $option = get_option( 'pfr_delete_posts_per_year' );
 
+$year = pfr__dppy_validate( $option[ 'label_year' ] );
+$limit = pfr__dppy_validate( $option[ 'label_limit' ] );
 
-$value = isset( $option[ 'label_year' ] ) ? esc_attr( $option[ 'label_year' ] ) : '';
-
-if( $value != '' ){
-    $value = preg_replace("/[^0-9]/", "", $value);
+if( $limit ){
+    $pfr_limitToLoop = $limit;
+}else if( $limit == 0 ){
+    $pfr_limitToLoop = -1;
+}else{
+    $pfr_limitToLoop = 200;
 }
 
-if($value == date( 'Y' ) || $value < date( 'Y' )){
-    $validate = true;
-}
+// validate time
+if($year == date( 'Y' ) || $year < date( 'Y' )){
+    if( $year != '' && strlen( $year ) == 4 ){
 
-if( $value != '' && strlen( $value ) == 4 && $validate && $value >= 2004 ){
+        pfr__dppy_deletePosts_Start( $option, $pfr_limitToLoop );
 
-    function pfr__dppy_runDelete( $pfr_archivesParamer ){
-        foreach ( $pfr_archivesParamer as $archives ) {
-            if( get_the_date( 'Y', $archives->ID ) == get_option( 'pfr_delete_posts_per_year' )[ 'label_year' ] ){
-                wp_delete_post( $archives->ID, true ); 
-            }
-        }
     }
-    
-    function pfr__dppy_delete_posts() {
-        $pfr_limitToLoop = -1;
+}
+
+
+// Start -> Functions
+
+// main function
+function pfr__dppy_deletePosts_Start( $table_DB, $pfr_limitToLoop ){
+
+    add_action( 'init', function() use ( $table_DB, $pfr_limitToLoop ) {
+        
+        // Define paramets to posts and delet the arr of result
         $arrToPost = [
             'numberposts'	=> $pfr_limitToLoop,
             'post_type'		=> 'post',
@@ -32,23 +38,44 @@ if( $value != '' && strlen( $value ) == 4 && $validate && $value >= 2004 ){
         ];
 
         $pfr_posts = get_posts( $arrToPost );
-        pfr__dppy_runDelete( $pfr_posts );
+        pfr__dppy_runDelete( $pfr_posts, $table_DB );
         
-        if( isset( get_option( 'pfr_delete_posts_per_year' )[ 'label_checked' ] ) && get_option( 'pfr_delete_posts_per_year' )[ 'label_checked' ] == "Yes" ){
-
+        // user check delet imgs?
+        if( isset( $table_DB[ 'label_checked' ] ) && $table_DB[ 'label_checked' ] == "Yes" ){
+            // Define paramets to posts and delet the arr of result
             $pfr_imgs = get_posts( [
                 'numberposts'	=> $pfr_limitToLoop,
                 'post_type'     => 'attachment',
             ] );
-            pfr__dppy_runDelete( $pfr_imgs );
+            pfr__dppy_runDelete( $pfr_imgs, $table_DB );
 
         }
 
         delete_option( 'pfr_delete_posts_per_year' );
-    }
-
-    add_action( 'init', 'pfr__dppy_delete_posts' );
-
+    });
 }
 
+
+// Delete posts and archives
+function pfr__dppy_runDelete( $pfr_archivesParamer, $DB ){
+    foreach ( $pfr_archivesParamer as $archives ) {
+        if( get_the_date( 'Y', $archives->ID ) == $DB[ 'label_year' ] ){
+            wp_delete_post( $archives->ID, true ); 
+        }
+    }
+}
+
+
+// validation values to work
+function pfr__dppy_validate( $arg ){
+    $validValue = isset( $arg ) ? esc_attr( $arg ) : '';
+
+    if( $validValue != '' ){
+        return $validValue = preg_replace("/[^0-9]/", "", $validValue);
+    }
+
+    return null;
+}
+
+// End -> Functions
 ?>
