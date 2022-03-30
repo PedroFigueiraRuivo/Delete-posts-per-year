@@ -5,20 +5,19 @@ $option = get_option( 'pfr_delete_posts_per_year' );
 $year = pfr__dppy_validate( $option[ 'label_year' ] );
 $limit = pfr__dppy_validate( $option[ 'label_limit' ] );
 
-if( $limit ){
+
+if( $limit > 0 ){
     $pfr_limitToLoop = $limit;
 }else if( $limit == 0 ){
     $pfr_limitToLoop = -1;
 }else{
-    $pfr_limitToLoop = 200;
+    $pfr_limitToLoop = 100;
 }
 
 // validate time
 if($year == date( 'Y' ) || $year < date( 'Y' )){
     if( $year != '' && strlen( $year ) == 4 ){
-
         pfr__dppy_deletePosts_Start( $option, $pfr_limitToLoop );
-
     }
 }
 
@@ -31,13 +30,18 @@ function pfr__dppy_deletePosts_Start( $table_DB, $pfr_limitToLoop ){
     add_action( 'init', function() use ( $table_DB, $pfr_limitToLoop ) {
         
         // Define paramets to posts and delet the arr of result
-        $arrToPost = [
+
+        $pfr_posts = get_posts( [
             'numberposts'	=> $pfr_limitToLoop,
             'post_type'		=> 'post',
-            'post_status'   => [ 'publish', 'draft' ]
-        ];
+            'post_status'   => [ 'publish', 'draft' ],
+            'date_query' => array(
+                array(
+                    'year'  => $table_DB[ 'label_year' ],
+                ),
+            ),
+        ] );
 
-        $pfr_posts = get_posts( $arrToPost );
         pfr__dppy_runDelete( $pfr_posts, $table_DB );
         
         // user check delet imgs?
@@ -45,7 +49,12 @@ function pfr__dppy_deletePosts_Start( $table_DB, $pfr_limitToLoop ){
             // Define paramets to posts and delet the arr of result
             $pfr_imgs = get_posts( [
                 'numberposts'	=> $pfr_limitToLoop,
-                'post_type'     => 'attachment',
+                'post_type'		=> 'attachment',
+                'date_query' => array(
+                    array(
+                        'year'  => $table_DB[ 'label_year' ],
+                    ),
+                ),
             ] );
             pfr__dppy_runDelete( $pfr_imgs, $table_DB );
 
@@ -59,9 +68,7 @@ function pfr__dppy_deletePosts_Start( $table_DB, $pfr_limitToLoop ){
 // Delete posts and archives
 function pfr__dppy_runDelete( $pfr_archivesParamer, $DB ){
     foreach ( $pfr_archivesParamer as $archives ) {
-        if( get_the_date( 'Y', $archives->ID ) == $DB[ 'label_year' ] ){
-            wp_delete_post( $archives->ID, true ); 
-        }
+            wp_delete_post( $archives->ID, true );
     }
 }
 
@@ -74,7 +81,7 @@ function pfr__dppy_validate( $arg ){
         return $validValue = preg_replace("/[^0-9]/", "", $validValue);
     }
 
-    return null;
+    return 100;
 }
 
 // End -> Functions
